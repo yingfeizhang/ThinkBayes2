@@ -1,4 +1,4 @@
-ThinkBayes2
+Computational Bayesian, Olin College, 2014
 ===========
 
-Text and code for the second edition of Think Bayes, by Allen Downey.
+Code for my work in an Olin College Bayesian course.
