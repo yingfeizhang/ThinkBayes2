@@ -13,17 +13,6 @@ from code.thinkbayes2 import Suite
 class Cookie(Suite):
     """A map from string bowl ID to probablity."""
 
-    def __init__(self, hypos):
-        """Initialize self.
-
-        hypos: sequence of string bowl IDs
-        """
-        super(Cookie, self).__init__(self)
-        for hypo in hypos:
-            self.Set(hypo, 1)
-        self.Normalize()
-
-
     mixes = {
         'Bowl 1':dict(vanilla=0.75, chocolate=0.25),
         'Bowl 2':dict(vanilla=0.5, chocolate=0.5),
