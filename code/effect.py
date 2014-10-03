@@ -40,7 +40,21 @@ def RunEstimate(update_func, num_points=31, median_flag=False):
     suite1 = suites['male']
     suite2 = suites['female']
 
-    # TODO: compute and plot the distribution of d
+    mu1 = suite1.Marginal(0)
+    sigma1 = suite1.Marginal(1)
+
+    mu2 = suite2.Marginal(0)
+    sigma2 = suite2.Marginal(1)
+
+    diff = mu1 - mu2
+    # thinkplot.Pdf(diff)
+    
+    s = (sigma1 + sigma2) / 2
+    
+    d = diff / s
+
+    thinkplot.Cdf(d.MakeCdf())
+    thinkplot.Show()
 
 
 def main():
