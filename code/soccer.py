@@ -18,10 +18,12 @@ class Soccer(thinkbayes2.Suite):
     def Likelihood(self, data, hypo):
         """Computes the likelihood of the data under the hypothesis.
 
-        hypo: 
-        data: 
+        hypo: number of goals per game
+        data: a time between goals in minutes
         """
-        like = 1
+        x = data
+        lam = hypo / 90 # convert to goals per minute
+        like = thinkbayes2.EvalExponentialPdf(x, lam)
         return like
 
     def PredRemaining(self, rem_time, score):
@@ -31,7 +33,18 @@ class Soccer(thinkbayes2.Suite):
         score: number of goals already scored
         """
         # TODO: fill this in
+        # lam = goals / game
+        lam_total = 0
+        for lam, prob in self.Items():
+            goals_in_remaining_time = lam * rem_time / 90 # convert to goals in remaining time
+            lam_total += lt * prob
+        
 
+
+        pmf = thinkbayes2.MakePoissonPmf(goals_in_remaining_time, 12)
+        pmf += score
+        thinkplot.Pmf(pmf)
+        thinkplot.Show()
 
 def main():
     hypos = numpy.linspace(0, 12, 201)
@@ -43,6 +56,8 @@ def main():
     suite.Update(11)
     thinkplot.Pdf(suite, label='posterior 1')
     print('after one goal', suite.Mean())
+
+    suite.PredRemaining(90-11, )
 
     thinkplot.Show()
 
