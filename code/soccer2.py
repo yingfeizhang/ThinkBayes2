@@ -19,11 +19,11 @@ class Soccer(thinkbayes2.Suite):
         """Computes the likelihood of the data under the hypothesis.
 
         hypo: goal rate in goals per game
-        data: interarrival time in minutes
+        data: number of goles scored (in a given game)
         """
-        # TODO: fill this in
-        like = 1
-        return like
+        lam = hypo
+        goals = data
+        return thinkbayes2.EvalPoissonPmf(goals, lam)
 
     def PredictiveDist(self, label='pred'):
         """Computes the distribution of goals scored in a game.
@@ -58,6 +58,8 @@ def main():
     thinkplot.Show()
 
     # TODO: compute posterior prob Germany is better than Argentina
+    posterior = suite1 > suite2
+    print("germany better than argentina with a probability: %d", posterior)
 
     # TODO: compute the Bayes factor of the evidence
 
