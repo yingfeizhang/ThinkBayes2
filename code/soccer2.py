@@ -19,7 +19,7 @@ class Soccer(thinkbayes2.Suite):
         """Computes the likelihood of the data under the hypothesis.
 
         hypo: goal rate in goals per game
-        data: number of goles scored (in a given game)
+        data: number of goals scored in a game
         """
         lam = hypo
         goals = data
