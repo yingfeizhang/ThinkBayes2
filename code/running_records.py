@@ -108,13 +108,18 @@ if __name__ == "__main__":
     for i in range(3):
         maximum_likelihoods[i] = records_pmf.Marginal(i).MaximumLikelihood()
         print(maximum_likelihoods[i])
-        thinkplot.Hist(records_pmf.Marginal(i))
-        plt.show()
+        # thinkplot.Hist(records_pmf.Marginal(i))
+        # plt.show()
+
+
+    date_range = pd.date_range(start='12/1/1970', end='1/1/2060', freq='365D')
+
+    for i in range(100):
+        alpha, beta, sigma = records_pmf.Random()
+        simulated_records = generate_records(date_range, alpha, beta, sigma)
+        plt.plot([date.value for date in date_range], simulated_records, 'or')
 
     plt.plot(dates, records, 'o')
     plt.plot([0, dates[-1]], [maximum_likelihoods[0], maximum_likelihoods[0] + maximum_likelihoods[1] * dates[-1]])
 
-    date_range = pd.date_range(start='12/1/1970', end='1/1/2060', freq='365D')
-    records = generate_records(date_range, maximum_likelihoods[0], maximum_likelihoods[1], maximum_likelihoods[2])
-    plt.plot([date.value for date in date_range], records)
     plt.show()
