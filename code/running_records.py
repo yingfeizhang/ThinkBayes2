@@ -96,6 +96,12 @@ def load_pmf_from_pickle(pickle_path):
         return pickle.load(f)
 
 
+def find_closest(lst, num):
+    """
+    Given a list and a number, return the element in that list closest to the number.
+    """
+    return min(lst, key=lambda x:abs(x-num))
+
 if __name__ == "__main__":
     if os.path.isfile(pickle_path):
         records_pmf = load_pmf_from_pickle(pickle_path)
@@ -128,5 +134,8 @@ if __name__ == "__main__":
 
     plt.show()
 
-    thinkplot.Hist(joint_estimate.Conditional(1, 0, 2365200000000000000))
+    year2045 = pd.to_datetime('1/1/2045')
+    year2045_binned = find_closest(date_range, year2045)
+
+    thinkplot.Hist(joint_estimate.Conditional(1, 0, year2045_binned.value))
     thinkplot.show()
