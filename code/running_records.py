@@ -23,7 +23,7 @@ def generate_records(dates, alpha, beta, sigma):
     """
     Given a range of dates, an x-intercept, and a slope, generate some running records
     """
-    return [alpha + beta * date.value + np.random.normal(scale=sigma) for date in dates]
+    return [(date, alpha + beta * date.value + np.random.normal(scale=sigma)) for date in dates]
 
 
 class RunningRecords(thinkbayes2.Suite, thinkbayes2.Joint):
@@ -112,14 +112,21 @@ if __name__ == "__main__":
         # plt.show()
 
 
-    date_range = pd.date_range(start='12/1/1970', end='1/1/2060', freq='365D')
+    date_range = pd.date_range(start='1/1/1970', end='1/1/2060', freq='365D')
 
-    for i in range(100):
+    joint_estimate = thinkbayes2.Joint()
+
+    for i in range(1000):
         alpha, beta, sigma = records_pmf.Random()
         simulated_records = generate_records(date_range, alpha, beta, sigma)
-        plt.plot([date.value for date in date_range], simulated_records, 'or')
+        for date, record in simulated_records:
+            joint_estimate.Incr((date.value, round(record, 2)))
+    thinkplot.Contour(joint_estimate, contour=False, pcolor=True)
 
     plt.plot(dates, records, 'o')
     plt.plot([0, dates[-1]], [maximum_likelihoods[0], maximum_likelihoods[0] + maximum_likelihoods[1] * dates[-1]])
 
     plt.show()
+
+    thinkplot.Hist(joint_estimate.Conditional(1, 0, 2365200000000000000))
+    thinkplot.show()
